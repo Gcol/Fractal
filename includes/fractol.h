@@ -1,54 +1,56 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   fractol.h                                          :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: gcollett <marvin@42.fr>                    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/09/07 15:12:56 by gcollett          #+#    #+#             */
-/*   Updated: 2017/09/07 15:16:04 by gcollett         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #ifndef FRACTOL_H
 # define FRACTOL_H
 
 # include "../minilibx/mlx.h"
 # include "../libft/includes/libft.h"
+# include <math.h>
 
-typedef struct		s_img
-{
-	int				sl;
-	int				bpp;
-	int				end;
-	void			*img_addr;
-	int				*dta;
-	struct s_img	*next;
-	struct s_img	*prev;
-}					t_img;
+# define WIDTH 1000
+# define HEIGHT 1000
 
-typedef struct		s_modif
+typedef struct	s_point
 {
-	int				x_base;
-	int				y_base;
-	int				z_base;
-	double			zoom;
-	int				distance;
-	int				width;
-	int				height;
-}					t_modif;
+	double	x;
+	double	y;
+}								t_point;
 
-typedef struct		s_map
+typedef struct	s_img
 {
-	void			*mlx;
-	void			*win;
-	int				**matrice;
-	int				*len_line;
-	int				len;
-	char			*path;
-	char			clr;
-	t_img			img;
-	t_modif			*modif;
-}					t_map;
+	int			sl;
+	int			bpp;
+	int			end;
+	int			*image;
+	int			choice;
+	int			iteration_max;
+	t_point	inc;
+	void		*img_addr;
+	double		x[2];
+	double		y[2];
+	double		x_scale;
+	double		y_scale;
+  struct  t_img   *next;
+  struct  t_img   *prev;
+	void (*fractal)(struct s_img *, t_point, t_point, int);
+}				t_img;
+
+typedef struct	s_modif
+{
+	int			x_base;
+	int			y_base;
+	int			z_base;
+	double		zoom;
+	int			distance;
+}				t_modif;
+
+typedef struct	s_map
+{
+	void		*mlx;
+	void		*win;
+	int			**matrice;
+	int			*len_line;
+	int			len;
+	t_img		*img;
+	t_modif		*modif;
+}				t_map;
 
 #endif
