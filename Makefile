@@ -37,7 +37,9 @@ LINK			:=	$(LIB_FT_LINK) $(LIB_MLX_LINK)  -fsanitize=address
 
 ## List of Functions
 
-SRC_FT =	 fractol
+SRC_FT =	 	fractal				\
+						utility				\
+						draw_fract	
 
 ## List of Utilities
 
@@ -69,12 +71,12 @@ $(NAME): $(OBJ_DIR) $(SRC) $(INC_DIR)/fractol.h $(LIB_MLX)/libmlx.a  $(LIB_FT)/l
 clean:
 	@rm -rf $(OBJ_DIR)
 	@make -C $(LIB_FT) clean
-	@make -C $(LIB_MLX) clean
 	@echo "$(COLOR)Objects\t\t\0033[0;31m[Deleted]\0033[0;37m"
 
 fclean: clean
 	@rm -f $(NAME)
 	@make -C $(LIB_FT) re
+	@make -C $(LIB_MLX) clean
 	@make -C $(LIB_MLX) re
 	@echo "$(COLOR)$(NAME)\t\t\0033[0;31m[Deleted]\0033[0;37m"
 

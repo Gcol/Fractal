@@ -96,7 +96,7 @@ void			*ft_realloc(void *str, size_t len_str, int add_bytes,
 		size_t reading_speed);
 int				ft_list_size(t_list *begin_list);
 void			ft_list_clear(t_list **begin_list);
-void			ft_swap(char *s1, char *s2);
+void			ft_swap(void *s1, void *s2);
 void			ft_lst_push_back(t_list **begin_list, void *content, \
 		size_t content_size);
 void			ft_lst_push_front(t_list **begin_list, void *content, \
