@@ -31,9 +31,9 @@ typedef struct		s_modif
 	int				current;
 	long			back;
 	int				distance;
-	double			x_base;
-	double			y_base;
-	double			zoom;
+	double		x_base;
+	double		y_base;
+	double		zoom;
 }					t_modif;
 
 typedef struct		s_img

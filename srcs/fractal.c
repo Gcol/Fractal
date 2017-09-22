@@ -49,7 +49,7 @@ void	init_jump(t_img *img)
 		img->y[0] = -1.8;
 		img->y[1] = 0.6;
 	}
-	img->iteration_max = 150;
+	img->iteration_max = 250;
 	img->y_scale = (img->y[1] - img->y[0]) / HEIGHT;
 	img->x_scale = (img->x[1] - img->x[0]) / WIDTH;
 }
