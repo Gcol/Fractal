@@ -37,8 +37,8 @@ void	init_jump(t_img *img)
 	}
 	else if (img->choice == 1)
 	{
-		img->x[0] = -2.1;
-		img->x[1] = 1.2;
+		img->x[0] = -3.3;
+		img->x[1] = 0;
 		img->y[0] = -1.2;
 		img->y[1] = 1.6;
 	}

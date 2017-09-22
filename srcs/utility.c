@@ -102,7 +102,10 @@ void choose_good_fractale(int choice, t_map *map)
 	map->img->choice = choice;
 	map->img->modif->back = 0xB82010;
 	init_jump(map->img);
-	draw_fractal(map, map->img->x[0], map->img->y[0]);
+	if(choice == 0 || choice == 3)
+    mlx_hook(map->win, 6, (1L << 6), &get_mouse_position, map);
+  else
+    draw_fractal(map, map->img->x[0], map->img->y[0]);
 	if (tmp)
 		tmp->next = map->img;
 	map->img->prev = tmp;
