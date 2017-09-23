@@ -11,20 +11,17 @@
 /* ************************************************************************** */
 
 #include <fractol.h>
+#include <stdio.h>
 
 int		scroll(int button, int x, int y, t_map *map)
 {
 	if (button > 0 && button < 6 && button != 3)
 	{
 		if (button == 5 || button == 2)
-			map->img->modif->zoom = 1 / 1.2;
+			map->img->modif->zoom = 1 / 1.1;
 		if (button == 4 || button == 1)
-			map->img->modif->zoom = 1.2;
+			map->img->modif->zoom = 1.1;
 		}
-		if (((float)((double)x * map->img->x_scale + map->img->x[0]) !=
-		(float)map->img->x[0] && (float)((double)x * map->img->x_scale +
-		map->img->x[0]) != (float)map->img->x[0] ) || map->img->modif->zoom == 1.2 )
-		{
 		map->img->modif->x_base = (double)x * map->img->x_scale + map->img->x[0];
 		map->img->modif->y_base = (double)y * map->img->y_scale + map->img->y[0];
 		map->img->x[0] *= map->img->modif->zoom;
@@ -35,7 +32,6 @@ int		scroll(int button, int x, int y, t_map *map)
 		map->img->x_scale *= map->img->modif->zoom;
 		map->img->modif->y_base -= map->img->modif->y_base * map->img->modif->zoom;
 		map->img->modif->x_base -= map->img->modif->x_base * map->img->modif->zoom;
-		}
 		re_trace(map);
 	return (0);
 }

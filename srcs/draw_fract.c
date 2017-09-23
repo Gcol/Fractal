@@ -40,6 +40,7 @@ void	fractal(t_img *img, t_point inc, t_point coord, int pos)
 		img->image[pos] = i * (img->modif->back * 100 + 0x00000F)
 		/ img->iteration_max * 100;
 }
+#include <stdio.h>
 
 void	draw_fractal(t_map *map, double x, double y)
 {
@@ -65,10 +66,17 @@ void	re_trace(t_map *map)
 {
 	ft_memset(map->img->image, 0, WIDTH * HEIGHT * 4);
 	mlx_put_image_to_window(map->mlx, map->win, map->img->img_addr, 0, 0);
-	map->img->x[0] += map->img->modif->x_base;
-	map->img->x[1] += map->img->modif->x_base;
-	map->img->y[0] += map->img->modif->y_base;
-	map->img->y[1] += map->img->modif->y_base;
+	printf("x0 = %.40lf\n",  map->img->x[0] );
+	map->img->x[0] += (double)map->img->modif->x_base;
+
+	printf("x0 = %.40lf\n", map->img->x[0] );
+
+	printf("x1 = %.40lf\n",  map->img->x[1]);
+	map->img->x[1] += (double)map->img->modif->x_base;
+	map->img->y[0] += (double)map->img->modif->y_base;
+	map->img->y[1] += (double)map->img->modif->y_base;
+
+	printf("x1 = %.40lf\n",  map->img->x[1]);
 	map->img->modif->zoom = 1;
 	map->img->modif->x_base = 0;
 	map->img->modif->y_base = 0;

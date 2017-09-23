@@ -8,8 +8,7 @@
 /*   Created: 2017/09/19 02:12:45 by gcollett          #+#    #+#             */
 /*   Updated: 2017/09/19 03:03:34 by gcollett         ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
-
+/* ****************************************************************************/
 #include <fractol.h>
 #include <math.h>
 
@@ -49,7 +48,7 @@ void	init_jump(t_img *img)
 		img->y[0] = -1.8;
 		img->y[1] = 0.6;
 	}
-	img->iteration_max = 250;
+	img->iteration_max = 500;
 	img->y_scale = (img->y[1] - img->y[0]) / HEIGHT;
 	img->x_scale = (img->x[1] - img->x[0]) / WIDTH;
 }
