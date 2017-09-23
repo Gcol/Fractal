@@ -20,18 +20,23 @@ int		scroll(int button, int x, int y, t_map *map)
 			map->img->modif->zoom = 1 / 1.2;
 		if (button == 4 || button == 1)
 			map->img->modif->zoom = 1.2;
-		map->img->modif->x_base = x * map->img->x_scale + map->img->x[0];
-		map->img->modif->y_base = y * map->img->y_scale + map->img->y[0];
-		map->img->x[0] = map->img->x[0] * map->img->modif->zoom;
-		map->img->x[1] = map->img->x[1] * map->img->modif->zoom;
-		map->img->y[0] = map->img->y[0] * map->img->modif->zoom;
-		map->img->y[1] = map->img->y[1] * map->img->modif->zoom;
-		map->img->y_scale = (map->img->y[1] - map->img->y[0]) / (float)HEIGHT;
-		map->img->x_scale = (map->img->x[1] - map->img->x[0]) / (float)WIDTH;
-		map->img->modif->y_base -= y * map->img->y_scale + map->img->y[0];
-		map->img->modif->x_base -= x * map->img->x_scale + map->img->x[0];
+		}
+		if (((float)((double)x * map->img->x_scale + map->img->x[0]) !=
+		(float)map->img->x[0] && (float)((double)x * map->img->x_scale +
+		map->img->x[0]) != (float)map->img->x[0] ) || map->img->modif->zoom == 1.2 )
+		{
+		map->img->modif->x_base = (double)x * map->img->x_scale + map->img->x[0];
+		map->img->modif->y_base = (double)y * map->img->y_scale + map->img->y[0];
+		map->img->x[0] *= map->img->modif->zoom;
+		map->img->x[1] *= map->img->modif->zoom;
+		map->img->y[0] *= map->img->modif->zoom;
+		map->img->y[1] *= map->img->modif->zoom;
+		map->img->y_scale *= map->img->modif->zoom;
+		map->img->x_scale *= map->img->modif->zoom;
+		map->img->modif->y_base -= map->img->modif->y_base * map->img->modif->zoom;
+		map->img->modif->x_base -= map->img->modif->x_base * map->img->modif->zoom;
+		}
 		re_trace(map);
-	}
 	return (0);
 }
 

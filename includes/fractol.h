@@ -45,10 +45,10 @@ typedef struct		s_img
 	int				choice;
 	int				iteration_max;
 	void			*img_addr;
-	float			x[2];
-	float			y[2];
-	float			x_scale;
-	float			y_scale;
+	double			x[2];
+	double			y[2];
+	double			x_scale;
+	double			y_scale;
 	struct s_img	*next;
 	struct s_img	*prev;
 	t_point			inc;

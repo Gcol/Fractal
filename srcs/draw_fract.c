@@ -25,7 +25,7 @@ void	fractal(t_img *img, t_point inc, t_point coord, int pos)
 		coord = temp;
 	}
 	i = -1;
-	while (inc.x * inc.x + inc.y * inc.y < 4 && ++i < img->iteration_max)
+	while (inc.x * inc.x + inc.y * inc.y < (double)4 && ++i < img->iteration_max)
 	{
 		tmp = inc.x;
 		inc.x = ((img->choice == 2) ? fabs(inc.x * inc.x) : inc.x * inc.x)
