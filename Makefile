@@ -39,7 +39,7 @@ LINK			:=	$(LIB_FT_LINK) $(LIB_MLX_LINK)  -fsanitize=address
 
 SRC_FT =	 	fractal				\
 						utility				\
-						draw_fract	
+						draw_fract
 
 ## List of Utilities
 
@@ -75,9 +75,8 @@ clean:
 
 fclean: clean
 	@rm -f $(NAME)
-	@make -C $(LIB_FT) re
+	@make -C $(LIB_FT) fclean
 	@make -C $(LIB_MLX) clean
-	@make -C $(LIB_MLX) re
 	@echo "$(COLOR)$(NAME)\t\t\0033[0;31m[Deleted]\0033[0;37m"
 
 re: fclean all

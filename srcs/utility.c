@@ -11,16 +11,15 @@
 /* ************************************************************************** */
 
 #include <fractol.h>
-#include <stdio.h>
 
 int		scroll(int button, int x, int y, t_map *map)
 {
 	if (button > 0 && button < 6 && button != 3)
 	{
 		if (button == 5 || button == 2)
-			map->img->modif->zoom = 1 / 1.1;
+			map->img->modif->zoom = 1 / 1.2;
 		if (button == 4 || button == 1)
-			map->img->modif->zoom = 1.1;
+			map->img->modif->zoom = 1.2;
 		}
 		map->img->modif->x_base = (double)x * map->img->x_scale + map->img->x[0];
 		map->img->modif->y_base = (double)y * map->img->y_scale + map->img->y[0];
@@ -43,13 +42,13 @@ int		get_mouse_position(int x, int y, t_map *map)
 		{
 			if (((float)map->img->x_scale * WIDTH) > 2)
 			{
-				map->img->inc.x = x * ((float)2.4 / WIDTH) - 1.7;
-				map->img->inc.y = y * ((float)2 / HEIGHT) - 1;
+				map->img->inc.x = x * ((double)2.4 / WIDTH) - 1.7;
+				map->img->inc.y = y * ((double)2 / HEIGHT) - 1;
 			}
 			else
 			{
-				map->img->inc.x = x * map->img->x_scale + map->img->x[0];
-				map->img->inc.y = y * map->img->y_scale + map->img->y[0];
+				map->img->inc.x = x * map->img->x_scale  + map->img->x[0];
+				map->img->inc.y = y * map->img->y_scale  + map->img->y[0];
 			}
 			re_trace(map);
 		}
@@ -74,7 +73,7 @@ int		pressed_key(int keycode, t_map *map)
 		else if (keycode == 49)
 			map->img->modif->current = !(map->img->modif->current);
 		else if (keycode == 126 || keycode == 125)
-			map->img->modif->y_base = map->img->y_scale * (float)HEIGHT / 10
+			map->img->modif->y_base = map->img->y_scale * (double)HEIGHT / 10
 			* ((keycode == 126) ? 1 : - 1);
 		else if (keycode == 124)
 			map->img->modif->x_base = -map->img->x_scale * WIDTH / 10;
@@ -85,29 +84,7 @@ int		pressed_key(int keycode, t_map *map)
 	return (0);
 }
 
-void	choose_good_fractale(int choice, t_map *map)
-{
-	struct s_img *tmp;
 
-	tmp = NULL;
-	if (map->img)
-		tmp = map->img;
-	map->img = ft_memalloc_exit(sizeof(t_img));
-	map->img->img_addr = mlx_new_image(map->mlx, WIDTH, HEIGHT);
-	map->img->image = (int *)mlx_get_data_addr(map->img->img_addr,
-			&map->img->bpp, &map->img->sl, &map->img->end);
-	map->img->modif = ft_memalloc_exit(sizeof(t_modif));
-	map->img->choice = choice;
-	map->img->modif->back = 0xB82010;
-	init_jump(map->img);
-	if (choice == 0 || choice == 3)
-		mlx_hook(map->win, 6, (1L << 6), &get_mouse_position, map);
-	else
-		draw_fractal(map, map->img->x[0], map->img->y[0]);
-	if (tmp)
-		tmp->next = map->img;
-	map->img->prev = tmp;
-}
 
 t_map	*create_win(void)
 {

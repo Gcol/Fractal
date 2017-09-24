@@ -11,12 +11,13 @@
 /* ************************************************************************** */
 
 #include <fractol.h>
+#include <stdio.h>
 
 void	fractal(t_img *img, t_point inc, t_point coord, int pos)
 {
-	int		i;
-	double	tmp;
-	t_point	temp;
+	double tmp;
+	t_point temp;
+	int i;
 
 	if (img->choice == 0)
 	{
@@ -25,22 +26,21 @@ void	fractal(t_img *img, t_point inc, t_point coord, int pos)
 		coord = temp;
 	}
 	i = -1;
-	while (inc.x * inc.x + inc.y * inc.y < (double)4 && ++i < img->iteration_max)
+	while(inc.x * inc.x + inc.y * inc.y < 4 && ++i < img->iteration_max)
 	{
 		tmp = inc.x;
 		inc.x = ((img->choice == 2) ? fabs(inc.x * inc.x) : inc.x * inc.x)
-			- inc.y * inc.y + coord.x;
+		 - inc.y * inc.y + coord.x;
 		inc.y = ((img->choice == 2) ? fabs(2 * inc.y * tmp) : 2 * inc.y * tmp)
 			+ coord.y;
 	}
-	img->image[pos] = 0xFFFFFF - img->modif->back;
-	if (i < 20)
+	if (i == img->iteration_max)
+		img->image[pos] = 0xFFFFFF - img->modif->back;
+	else if (i < 20)
 		img->image[pos] = img->modif->back;
 	else
-		img->image[pos] = i * (img->modif->back * 100 + 0x00000F)
-		/ img->iteration_max * 100;
-}
-#include <stdio.h>
+		img->image[pos] = i * (img->modif->back * 100 + 0x00000F) / img->iteration_max;
+	}
 
 void	draw_fractal(t_map *map, double x, double y)
 {
@@ -48,16 +48,18 @@ void	draw_fractal(t_map *map, double x, double y)
 	int		k;
 
 	k = -1;
-	coord.y = y;
+	coord.y = map->img->y[0];
+
 	while (k / HEIGHT < HEIGHT)
 	{
 		if ((k + 1) % WIDTH == 0)
 		{
-			coord.y += map->img->y_scale;
-			coord.x = x;
+			coord.y = map->img->y[0] + ++y * map->img->y_scale;
+			coord.x = map->img->x[0];
+			x = 0;
 		}
 		fractal(map->img, map->img->inc, coord, ++k);
-		coord.x += map->img->x_scale;
+		coord.x =  map->img->x[0] + ++x * map->img->x_scale;
 	}
 	mlx_put_image_to_window(map->mlx, map->win, map->img->img_addr, 0, 0);
 }
@@ -66,17 +68,10 @@ void	re_trace(t_map *map)
 {
 	ft_memset(map->img->image, 0, WIDTH * HEIGHT * 4);
 	mlx_put_image_to_window(map->mlx, map->win, map->img->img_addr, 0, 0);
-	printf("x0 = %.40lf\n",  map->img->x[0] );
-	map->img->x[0] += (double)map->img->modif->x_base;
-
-	printf("x0 = %.40lf\n", map->img->x[0] );
-
-	printf("x1 = %.40lf\n",  map->img->x[1]);
-	map->img->x[1] += (double)map->img->modif->x_base;
-	map->img->y[0] += (double)map->img->modif->y_base;
-	map->img->y[1] += (double)map->img->modif->y_base;
-
-	printf("x1 = %.40lf\n",  map->img->x[1]);
+	map->img->x[0] += map->img->modif->x_base;
+	map->img->x[1] += map->img->modif->x_base;
+	map->img->y[0] += map->img->modif->y_base;
+	map->img->y[1] += map->img->modif->y_base;
 	map->img->modif->zoom = 1;
 	map->img->modif->x_base = 0;
 	map->img->modif->y_base = 0;
