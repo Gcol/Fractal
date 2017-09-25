@@ -33,13 +33,14 @@ LIB_MLX_LINK	:=	-L $(LIB_MLX) -l mlx -framework OpenGL -framework Appkit
 
 # our project
 INCLUDES		:=	$(LIB_FT_INC) $(LIB_MLX_INC) -I$(INC_DIR)
-LINK			:=	$(LIB_FT_LINK) $(LIB_MLX_LINK)  -fsanitize=address
+LINK			:=	$(LIB_FT_LINK) $(LIB_MLX_LINK)
 
 ## List of Functions
 
-SRC_FT =	 	fractal				\
-						utility				\
-						draw_fract
+SRC_FT =	 	fractal					\
+						utility					\
+						draw_fract			\
+						choose_fractal	\
 
 ## List of Utilities
 
@@ -60,7 +61,7 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c $(INC_DIR)/fractol.h
 	@$(CC) -c $< -o $@
 	@echo "$(COLOR)Compilating : \0033[0;32m$(@:$(OBJ_DIR)/%=%)\0033[0;37m"
 
-$(NAME): $(OBJ_DIR) $(SRC) $(INC_DIR)/fractol.h $(LIB_MLX)/libmlx.a  $(LIB_FT)/libft.a
+$(NAME): $(OBJ_DIR) $(SRC) $(INC_DIR)/fractol.h
 	@$(MAKE) -j -s $(OBJ)
 	@echo "$(COLOR)Objects\t\t\0033[0;32m[Created]\0033[0;37m"
 	@make -C $(LIB_FT)

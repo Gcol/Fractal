@@ -6,7 +6,7 @@
 /*   By: gcollett <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/19 02:12:59 by gcollett          #+#    #+#             */
-/*   Updated: 2017/09/22 06:32:26 by gcollett         ###   ########.fr       */
+/*   Updated: 2017/09/25 10:18:10 by gcollett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,24 +20,24 @@ int		scroll(int button, int x, int y, t_map *map)
 			map->img->modif->zoom = 1 / 1.2;
 		if (button == 4 || button == 1)
 			map->img->modif->zoom = 1.2;
-		}
-		map->img->modif->x_base = (double)x * map->img->x_scale + map->img->x[0];
-		map->img->modif->y_base = (double)y * map->img->y_scale + map->img->y[0];
-		map->img->x[0] *= map->img->modif->zoom;
-		map->img->x[1] *= map->img->modif->zoom;
-		map->img->y[0] *= map->img->modif->zoom;
-		map->img->y[1] *= map->img->modif->zoom;
-		map->img->y_scale *= map->img->modif->zoom;
-		map->img->x_scale *= map->img->modif->zoom;
-		map->img->modif->y_base -= map->img->modif->y_base * map->img->modif->zoom;
-		map->img->modif->x_base -= map->img->modif->x_base * map->img->modif->zoom;
-		re_trace(map);
+	}
+	map->img->modif->x_base = (double)x * map->img->x_scale + map->img->x[0];
+	map->img->modif->y_base = (double)y * map->img->y_scale + map->img->y[0];
+	map->img->x[0] *= map->img->modif->zoom;
+	map->img->x[1] *= map->img->modif->zoom;
+	map->img->y[0] *= map->img->modif->zoom;
+	map->img->y[1] *= map->img->modif->zoom;
+	map->img->y_scale *= map->img->modif->zoom;
+	map->img->x_scale *= map->img->modif->zoom;
+	map->img->modif->y_base -= map->img->modif->y_base * map->img->modif->zoom;
+	map->img->modif->x_base -= map->img->modif->x_base * map->img->modif->zoom;
+	re_trace(map);
 	return (0);
 }
 
 int		get_mouse_position(int x, int y, t_map *map)
 {
-	if (map->img->choice == 0 || map->img->choice == 3)
+	if (map->img->choice == 0 || map->img->choice == 3 || map->img->choice == 5 || map->img->choice == 2)
 		if (map->img->modif->current == 0)
 		{
 			if (((float)map->img->x_scale * WIDTH) > 2)
@@ -47,8 +47,8 @@ int		get_mouse_position(int x, int y, t_map *map)
 			}
 			else
 			{
-				map->img->inc.x = x * map->img->x_scale  + map->img->x[0];
-				map->img->inc.y = y * map->img->y_scale  + map->img->y[0];
+				map->img->inc.x = x * map->img->x_scale + map->img->x[0];
+				map->img->inc.y = y * map->img->y_scale + map->img->y[0];
 			}
 			re_trace(map);
 		}
@@ -59,13 +59,14 @@ int		pressed_key(int keycode, t_map *map)
 {
 	if (keycode == 53)
 		exit(0);
-	if ((keycode >= 123 && keycode <= 126) || keycode == 49 ||
+	if ((keycode >= 123 && keycode <= 126) || keycode == 49 || keycode == 4 ||
 			keycode == 13 || keycode == 1 || keycode == 2 || keycode == 0)
 	{
-		if (keycode == 1)
-			map->img->modif->back += 0x00000F;
-		else if (keycode == 13 && map->img->modif->back > 0x00000F)
-			map->img->modif->back -= 0x00000F;
+		if (keycode == 1 || (keycode == 13 && map->img->modif->back > 0x00000F))
+			map->img->modif->back = map->img->modif->back + 0x00000F
+				* ((keycode == 1) ? 1 : -1);
+		else if (keycode == 4)
+			map->img->modif->help = !(map->img->modif->help);
 		else if (keycode == 0 && (map->img->next) != NULL)
 			map->img = map->img->next;
 		else if (keycode == 2 && (map->img->prev) != NULL)
@@ -74,17 +75,14 @@ int		pressed_key(int keycode, t_map *map)
 			map->img->modif->current = !(map->img->modif->current);
 		else if (keycode == 126 || keycode == 125)
 			map->img->modif->y_base = map->img->y_scale * (double)HEIGHT / 10
-			* ((keycode == 126) ? 1 : - 1);
-		else if (keycode == 124)
-			map->img->modif->x_base = -map->img->x_scale * WIDTH / 10;
-		else if (keycode == 123)
-			map->img->modif->x_base = map->img->x_scale * WIDTH / 10;
+				* ((keycode == 126) ? 1 : -1);
+		else if (keycode == 124 || keycode == 123)
+			map->img->modif->x_base = -map->img->x_scale * (double)WIDTH / 10
+				* ((keycode == 124) ? 1 : -1);
 		re_trace(map);
 	}
 	return (0);
 }
-
-
 
 t_map	*create_win(void)
 {

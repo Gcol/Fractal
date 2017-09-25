@@ -6,7 +6,7 @@
 /*   By: gcollett <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/19 02:12:45 by gcollett          #+#    #+#             */
-/*   Updated: 2017/09/19 03:03:34 by gcollett         ###   ########.fr       */
+/*   Updated: 2017/09/25 10:15:22 by gcollett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,14 @@ int		argument_valid(char *argv)
 		return (0);
 	else if (ft_strcmp(argv, "Mandelbrot") == 0)
 		return (1);
-	else if (ft_strcmp(argv, "Perso") == 0)
+	else if (ft_strcmp(argv, "B-Ship") == 0)
 		return (2);
 	else if (ft_strcmp(argv, "Mandelbrot1") == 0)
 		return (3);
+	else if (ft_strcmp(argv, "Heart") == 0)
+		return (4);
+	else if (ft_strcmp(argv, "Perso") == 0)
+		return (5);
 	return (-1);
 }
 
@@ -53,6 +57,12 @@ void	init_fractale(int choice, t_map *map)
 	map->img->prev = tmp;
 }
 
+void	ft_put_error(void)
+{
+	write(2, "Usage : ./fractol (Julia / Mandelbrot/ \
+B-Ship / Mandelbrot1 / Heart / Perso)\n", 78);
+}
+
 int		main(int argc, char **argv)
 {
 	t_map	*map;
@@ -60,22 +70,24 @@ int		main(int argc, char **argv)
 	int		choice;
 
 	error = 1;
+	choice = -1;
 	if (argc > 1)
 	{
 		while (--argc)
 		{
 			if ((choice = argument_valid(argv[argc])) >= 0)
 			{
-				if (error == 1 && (map = create_win()))
+				if (!map && (map = create_win()))
 					error = 0;
 				init_fractale(choice, map);
 			}
+			else if (error != 2 && (error = 2))
+				ft_put_error();
 		}
-		if (!error)
+		if (map)
 			mlx_loop(map->mlx);
 	}
-	if (error == 1)
-		write(2, "Usage : ./fractol (Julia / Mandelbrot/ \
-Perso / Mandelbrot1)\n", 60);
+	else
+		ft_put_error();
 	return (0);
 }

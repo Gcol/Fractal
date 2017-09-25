@@ -6,41 +6,32 @@
 /*   By: gcollett <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/22 06:38:13 by gcollett          #+#    #+#             */
-/*   Updated: 2017/09/22 06:38:50 by gcollett         ###   ########.fr       */
+/*   Updated: 2017/09/24 20:49:12 by gcollett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <fractol.h>
-#include <stdio.h>
 
-void	fractal(t_img *img, t_point inc, t_point coord, int pos)
+void	print_help(t_map *map)
 {
-	double tmp;
-	t_point temp;
-	int i;
+	char	*src[7];
+	int		i;
 
-	if (img->choice == 0)
+	i = 0;
+	src[0] = "Help :";
+	src[1] = "Touche fleche pour le deplacement";
+	src[2] = "W et S pour changer les couleurs";
+	src[3] = "Molette de la souris et clique pour zoomer et dezoomer";
+	src[4] = "A et D pour changer de fractal si il y en a plusieur";
+	src[5] = "H pour afficher enlever et afficher l annonce d aide";
+	src[6] = "Espace pour figer la souris \
+dans les fractale utilisant la souris";
+	while (i < 7)
 	{
-		temp = inc;
-		inc = coord;
-		coord = temp;
+		mlx_string_put(map->mlx, map->win, 15, (i + 1) * 15, 0, src[i]);
+		i++;
 	}
-	i = -1;
-	while(inc.x * inc.x + inc.y * inc.y < 4 && ++i < img->iteration_max)
-	{
-		tmp = inc.x;
-		inc.x = ((img->choice == 2) ? fabs(inc.x * inc.x) : inc.x * inc.x)
-		 - inc.y * inc.y + coord.x;
-		inc.y = ((img->choice == 2) ? fabs(2 * inc.y * tmp) : 2 * inc.y * tmp)
-			+ coord.y;
-	}
-	if (i == img->iteration_max)
-		img->image[pos] = 0xFFFFFF - img->modif->back;
-	else if (i < 20)
-		img->image[pos] = img->modif->back;
-	else
-		img->image[pos] = i * (img->modif->back * 100 + 0x00000F) / img->iteration_max;
-	}
+}
 
 void	draw_fractal(t_map *map, double x, double y)
 {
@@ -49,7 +40,6 @@ void	draw_fractal(t_map *map, double x, double y)
 
 	k = -1;
 	coord.y = map->img->y[0];
-
 	while (k / HEIGHT < HEIGHT)
 	{
 		if ((k + 1) % WIDTH == 0)
@@ -58,10 +48,12 @@ void	draw_fractal(t_map *map, double x, double y)
 			coord.x = map->img->x[0];
 			x = 0;
 		}
-		fractal(map->img, map->img->inc, coord, ++k);
-		coord.x =  map->img->x[0] + ++x * map->img->x_scale;
+		choose_good_fractal(map->img, map->img->inc, coord, ++k);
+		coord.x = map->img->x[0] + ++x * map->img->x_scale;
 	}
 	mlx_put_image_to_window(map->mlx, map->win, map->img->img_addr, 0, 0);
+	if (map->img->modif->help == 0)
+		print_help(map);
 }
 
 void	re_trace(t_map *map)
