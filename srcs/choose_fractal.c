@@ -12,7 +12,14 @@
 
 #include <fractol.h>
 
-int		fractal(t_img *img, t_point inc, t_point coord)
+double ft_dabs(double value)
+{
+	if (value < 0)
+		return(-value);
+	return(value);
+}
+
+int		fractal(t_img *img, t_point inc, t_point coord, int multiplicator)
 {
 	double	tmp;
 	int		i;
@@ -22,12 +29,12 @@ int		fractal(t_img *img, t_point inc, t_point coord)
 	{
 		tmp = inc.x;
 		inc.x = inc.x * inc.x - inc.y * inc.y + coord.x;
-		inc.y = 2 * inc.y * tmp + coord.y;
+		inc.y = multiplicator * inc.y * tmp + coord.y;
 	}
 	return (i);
 }
 
-int		b_fractal(t_img *img, t_point inc, t_point coord)
+int		b_fractal(t_img *img, t_point inc, t_point coord, int multiplicator)
 {
 	double	tmp;
 	int		i;
@@ -36,17 +43,13 @@ int		b_fractal(t_img *img, t_point inc, t_point coord)
 	while (inc.x * inc.x + inc.y * inc.y < 4 && ++i < img->iteration_max)
 	{
 		tmp = inc.x;
-		inc.x = inc.x * inc.x - inc.y * inc.y + coord.x;
-		if (inc.x < 0)
-			inc.x *= -1;
-		inc.y = 2 * inc.y * tmp + coord.y;
-		if (inc.y < 0)
-			inc.y *= -1;
+		inc.x = fabs(inc.x * inc.x) - inc.y * inc.y + coord.x;
+		inc.y = multiplicator * fabs(inc.y * tmp) + coord.y;
 	}
 	return (i);
 }
 
-int		c_fractal(t_img *img, t_point inc, t_point coord)
+int		c_fractal(t_img *img, t_point inc, t_point coord, int multiplicator)
 {
 	double	tmp;
 	int		i;
@@ -55,8 +58,8 @@ int		c_fractal(t_img *img, t_point inc, t_point coord)
 	while (inc.x * inc.x + inc.y * inc.y < 4 && ++i < img->iteration_max)
 	{
 		tmp = inc.x;
-		inc.x = inc.x * inc.x - fabs(inc.y * inc.y) + coord.x;
-		inc.y = 2 * inc.y * fabs(tmp) + coord.y;
+		inc.x = inc.x * inc.x - ft_dabs(inc.y * inc.y) + coord.x;
+		inc.y = multiplicator * inc.y * ft_dabs(tmp) + coord.y;
 	}
 	return (i);
 }
@@ -66,19 +69,25 @@ void	choose_good_fractal(t_img *img, t_point inc, t_point coord, int pos)
 	int i;
 
 	if (img->choice == 0)
-		i = fractal(img, coord, inc);
-	else if (img->choice == 2)
-		i = b_fractal(img, inc, coord);
-	else if (img->choice == 1 || img->choice == 3)
-		i = fractal(img, inc, coord);
+		i = fractal(img, coord, inc, 2);
+	else if (img->choice == 1 || img->choice == 2)
+		i = fractal(img, inc, coord, 2 * ((img->choice == 1) ? 1 : -1));
+	else if (img->choice == 3)
+		i = c_fractal(img, inc, coord, 2);
 	else if (img->choice == 4)
-		i = c_fractal(img, inc, coord);
+		i = fractal(img, coord, inc, -2);
+	else if (img->choice == 5)
+		i = b_fractal(img, inc, coord, 2);
+	else if (img->choice == 6)
+		i = c_fractal(img, inc, coord, -2);
+	else if (img->choice == 7)
+		i = b_fractal(img, coord, inc, 2);
 	else
-		i = b_fractal(img, coord, inc);
+		i = c_fractal(img, coord, inc, 2 * ((img->choice == 8) ? 1 : -1));
 	if (i == img->iteration_max)
-		img->image[pos] = 0xFFFFFF - img->modif->back;
+		img->image[pos] = 0x00FFFFFF - img->modif->back;
 	else if (i < 20)
 		img->image[pos] = img->modif->back;
 	else
-		img->image[pos] = i ;
+		img->image[pos] = i * img->modif->back | 0x000000FF ;
 }

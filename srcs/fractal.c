@@ -19,14 +19,22 @@ int		argument_valid(char *argv)
 		return (0);
 	else if (ft_strcmp(argv, "Mandelbrot") == 0)
 		return (1);
-	else if (ft_strcmp(argv, "B-Ship") == 0)
+	else if (ft_strcmp(argv, "Tricorn") == 0)
 		return (2);
-	else if (ft_strcmp(argv, "Mandelbrot1") == 0)
-		return (3);
 	else if (ft_strcmp(argv, "Heart") == 0)
+		return (3);
+	else if (ft_strcmp(argv, "Julia2") == 0)
 		return (4);
-	else if (ft_strcmp(argv, "Perso") == 0)
+	else if (ft_strcmp(argv, "B-Ship") == 0)
 		return (5);
+	else if (ft_strcmp(argv, "Perpendicular") == 0)
+		return (6);
+	else if (ft_strcmp(argv, "Julia3") == 0)
+		return (7);
+	else if (ft_strcmp(argv, "Julia4") == 0)
+		return (8);
+	else if (ft_strcmp(argv, "Julia5") == 0)
+		return (9);
 	return (-1);
 }
 
@@ -45,7 +53,7 @@ void	init_fractale(int choice, t_map *map)
 	map->img->choice = choice;
 	map->img->modif->back = 0xB82010;
 	map->img->x[0] = -2;
-	map->img->x[1] = 2;
+	map->img->x[1] = 1.5;
 	map->img->y[0] = -1.5;
 	map->img->y[1] = 1.7;
 	map->img->iteration_max = 250;
@@ -59,8 +67,8 @@ void	init_fractale(int choice, t_map *map)
 
 void	ft_put_error(void)
 {
-	write(2, "Usage : ./fractol (Julia / Mandelbrot/ \
-B-Ship / Mandelbrot1 / Heart / Perso)\n", 78);
+	write(2, "Usage : ./fractol (B-Ship / Heart/ Julia / Julia2 / Julia 3 \
+/ Julia 4 / Julia 5 / Mandelbrot / Perpendicular / Tricorn)\n", 122);
 }
 
 int		main(int argc, char **argv)
