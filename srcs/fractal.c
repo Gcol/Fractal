@@ -6,7 +6,7 @@
 /*   By: gcollett <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/19 02:12:45 by gcollett          #+#    #+#             */
-/*   Updated: 2017/09/25 10:15:22 by gcollett         ###   ########.fr       */
+/*   Updated: 2017/09/29 17:18:34 by gcollett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int		argument_valid(char *argv)
 	return (-1);
 }
 
-void init_repere(t_map *map)
+void	init_repere(t_map *map)
 {
 	map->img->modif->back = 0xB82010;
 	map->img->x[0] = -2;
@@ -71,8 +71,8 @@ void	init_fractale(int choice, t_map *map)
 
 void	ft_put_error(void)
 {
-	write(2, "Usage : ./fractol (B-Ship / Heart/ Julia / Julia2 / Julia 3 \
-/ Julia 4 / Julia 5 / Mandelbrot / Perpendicular / Tricorn)\n", 122);
+	write(2, "Usage : ./fractol (B-Ship / Heart / Julia / Julia2 / Julia3 \
+/ Julia4 / Julia5 / Mandelbrot / Perpendicular / Tricorn)\n", 118);
 }
 
 int		main(int argc, char **argv)

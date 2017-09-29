@@ -49,7 +49,7 @@ void	draw_fractal(t_map *map, double x, double y)
 			coord.x = map->img->x[0];
 			x = 0;
 		}
-		choose_good_fractal(map->img, map->img->inc, coord, ++k);
+		choose_fractal(map->img, map->img->inc, coord, ++k);
 		coord.x = map->img->x[0] + ++x * map->img->x_scale;
 	}
 	mlx_put_image_to_window(map->mlx, map->win, map->img->img_addr, 0, 0);
@@ -59,6 +59,8 @@ void	draw_fractal(t_map *map, double x, double y)
 
 void	re_trace(t_map *map)
 {
+	ft_memset(map->img->image, map->img->modif->back, WIDTH * HEIGHT * 4);
+	mlx_put_image_to_window(map->mlx, map->win, map->img->img_addr, 0, 0);
 	map->img->x[0] += map->img->modif->x_base;
 	map->img->x[1] += map->img->modif->x_base;
 	map->img->y[0] += map->img->modif->y_base;

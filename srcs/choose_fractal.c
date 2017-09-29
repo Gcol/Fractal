@@ -12,14 +12,14 @@
 
 #include <fractol.h>
 
-double ft_dabs(double value)
+static	double	ft_dabs(double value)
 {
 	if (value < 0)
-		return(-value);
-	return(value);
+		return (-value);
+	return (value);
 }
 
-int		fractal(t_img *img, t_point inc, t_point coord, int multiplicator)
+static	int		fractal(t_img *img, t_point inc, t_point coord, int multip)
 {
 	double	tmp;
 	int		i;
@@ -29,12 +29,12 @@ int		fractal(t_img *img, t_point inc, t_point coord, int multiplicator)
 	{
 		tmp = inc.x;
 		inc.x = inc.x * inc.x - inc.y * inc.y + coord.x;
-		inc.y = multiplicator * inc.y * tmp + coord.y;
+		inc.y = multip * inc.y * tmp + coord.y;
 	}
 	return (i);
 }
 
-int		b_fractal(t_img *img, t_point inc, t_point coord, int multiplicator)
+static	int		b_fractal(t_img *img, t_point inc, t_point coord, int multip)
 {
 	double	tmp;
 	int		i;
@@ -43,13 +43,13 @@ int		b_fractal(t_img *img, t_point inc, t_point coord, int multiplicator)
 	while (inc.x * inc.x + inc.y * inc.y < 4 && ++i < img->iteration_max)
 	{
 		tmp = inc.x;
-		inc.x = fabs(inc.x * inc.x) - inc.y * inc.y + coord.x;
-		inc.y = multiplicator * fabs(inc.y * tmp) + coord.y;
+		inc.x = ft_dabs(inc.x * inc.x) - inc.y * inc.y + coord.x;
+		inc.y = multip * ft_dabs(inc.y * tmp) + coord.y;
 	}
 	return (i);
 }
 
-int		c_fractal(t_img *img, t_point inc, t_point coord, int multiplicator)
+static	int		c_fractal(t_img *img, t_point inc, t_point coord, int multip)
 {
 	double	tmp;
 	int		i;
@@ -59,12 +59,12 @@ int		c_fractal(t_img *img, t_point inc, t_point coord, int multiplicator)
 	{
 		tmp = inc.x;
 		inc.x = inc.x * inc.x - ft_dabs(inc.y * inc.y) + coord.x;
-		inc.y = multiplicator * inc.y * ft_dabs(tmp) + coord.y;
+		inc.y = multip * inc.y * ft_dabs(tmp) + coord.y;
 	}
 	return (i);
 }
 
-void	choose_good_fractal(t_img *img, t_point inc, t_point coord, int pos)
+void			choose_fractal(t_img *img, t_point inc, t_point coord, int pos)
 {
 	int i;
 
@@ -89,5 +89,5 @@ void	choose_good_fractal(t_img *img, t_point inc, t_point coord, int pos)
 	else if (i < 20)
 		img->image[pos] = img->modif->back;
 	else
-		img->image[pos] = i * img->modif->back | 0x000000FF ;
+		img->image[pos] = i * img->modif->back | 0x000000FF;
 }

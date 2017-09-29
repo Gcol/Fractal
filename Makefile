@@ -15,7 +15,7 @@ LIB_DIR = libs
 
 ## Compilating Utilities
 
-FLAGS = -Wall -Wextra -Werror -Ofast
+FLAGS = -Wall -Wextra -Werror
 INC = $(INC_DIR:%=-I ./%)
 LIB = -L $(LIB_DIR) -lft -lmlx
 MLX = -framework OpenGL -framework AppKit
@@ -32,7 +32,7 @@ LIB_MLX_INC		:=	-I $(LIB_MLX)
 LIB_MLX_LINK	:=	-L $(LIB_MLX) -l mlx -framework OpenGL -framework Appkit
 
 # our project
-INCLUDES		:=	$(LIB_FT_INC) $(LIB_MLX_INC) -I$(INC_DIR)
+INCLUDES		:=	$(LIB_FT_INC) $(LIB_MLX_INC) -I $(INC_DIR)
 LINK			:=	$(LIB_FT_LINK) $(LIB_MLX_LINK)
 
 ## List of Functions
@@ -84,6 +84,6 @@ re: fclean all
 
 norme:
 	@norminette $(SRC) $(INC_DIR)/
-	@make norme -C $(LIB_DIR)
+	@make norme -C $(LIB_FT)
 
 .PHONY: all clean fclean re norme

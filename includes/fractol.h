@@ -6,7 +6,7 @@
 /*   By: gcollett <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/19 02:13:11 by gcollett          #+#    #+#             */
-/*   Updated: 2017/09/24 20:56:20 by gcollett         ###   ########.fr       */
+/*   Updated: 2017/09/29 10:54:35 by gcollett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,10 @@
 
 # include "../minilibx/mlx.h"
 # include "../libft/includes/libft.h"
-# include <math.h>
 
 # define WIDTH 750
 # define HEIGHT 750
+# define OPAC 0x000000FF
 
 typedef struct		s_point
 {
@@ -65,9 +65,9 @@ typedef struct		s_map
 
 void				re_trace(t_map *map);
 t_map				*create_win();
-void 				init_repere(t_map *map);
+void				init_repere(t_map *map);
 void				draw_fractal(t_map *map, double x, double y);
-void				choose_good_fractal(t_img *img, t_point inc, \
+void				choose_fractal(t_img *img, t_point inc, \
 t_point coord, int pos);
 
 #endif

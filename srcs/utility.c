@@ -12,7 +12,15 @@
 
 #include <fractol.h>
 
-static 	int		scroll(int button, int x, int y, t_map *map)
+static	int		ft_key_valid(int key)
+{
+	if ((key >= 123 && key <= 126) || key == 49 || key == 4 || key == 13 ||
+		key == 1 || key == 2 || key == 0 || key == 15)
+		return (1);
+	return (0);
+}
+
+static	int		scroll(int button, int x, int y, t_map *map)
 {
 	if (button > 0 && button < 6 && button != 3)
 	{
@@ -35,60 +43,57 @@ static 	int		scroll(int button, int x, int y, t_map *map)
 	return (0);
 }
 
-static	int		get_mouse_position(int x, int y, t_map *map)
+static	int		get_mouse_position(int x, int y, t_map *m)
 {
-	if (map->img->choice == 0 || map->img->choice == 3 || map->img->choice == 4
-		|| map->img->choice == 7 || map->img->choice == 8 || map->img->choice == 9)
-		if (map->img->modif->current == 0)
+	if (m->img->choice == 0 || m->img->choice == 3 || m->img->choice == 4
+		|| m->img->choice == 7 || m->img->choice == 8 || m->img->choice == 9)
+		if (m->img->modif->current == 0)
 		{
-			if (((float)map->img->x_scale * WIDTH) > 2)
+			if (((float)m->img->x_scale * WIDTH) > 2)
 			{
-				map->img->inc.x = x * ((double)2.4 / WIDTH) - 1.7;
-				map->img->inc.y = y * ((double)2 / HEIGHT) - 1;
+				m->img->inc.x = x * ((double)2.4 / WIDTH) - 1.7;
+				m->img->inc.y = y * ((double)2 / HEIGHT) - 1;
 			}
 			else
 			{
-				map->img->inc.x = x * map->img->x_scale + map->img->x[0];
-				map->img->inc.y = y * map->img->y_scale + map->img->y[0];
+				m->img->inc.x = x * m->img->x_scale + m->img->x[0];
+				m->img->inc.y = y * m->img->y_scale + m->img->y[0];
 			}
-			re_trace(map);
+			re_trace(m);
 		}
 	return (0);
 }
 
-#include <stdio.h>
-
-static	int		pressed_key(int key, t_map *map)
+static int		pressed_key(int key, t_map *m)
 {
 	if (key == 53)
 		exit(0);
-	if ((key >= 123 && key <= 126) || key == 49 || key == 4 ||	key == 13 ||
-		key == 1 || key == 2 || key == 0 || key == 0 || key == 15)
+	if (ft_key_valid(key))
 	{
-		if (key == 1 || key == 13 )
-			map->img->modif->back += ((0x00000F | 0x000000FF) * ((key == 1) ? 1 : -1));
+		if (key == 1 || key == 13)
+			m->img->modif->back += ((0x00000F | OPAC) * ((key == 1) ? 1 : -1));
 		else if (key == 4)
-			map->img->modif->help = !(map->img->modif->help);
-		else if (key == 0 && (map->img->next) != NULL)
-			map->img = map->img->next;
-		else if (key == 2 && (map->img->prev) != NULL)
-			map->img = map->img->prev;
+			m->img->modif->help = !(m->img->modif->help);
+		else if (key == 0 && (m->img->next) != NULL)
+			m->img = m->img->next;
+		else if (key == 2 && (m->img->prev) != NULL)
+			m->img = m->img->prev;
 		else if (key == 49)
-			map->img->modif->current = !(map->img->modif->current);
+			m->img->modif->current = !(m->img->modif->current);
 		else if (key == 126 || key == 125)
-			map->img->modif->y_base = map->img->y_scale * (double)HEIGHT / 10
+			m->img->modif->y_base = m->img->y_scale * (double)HEIGHT / 10
 				* ((key == 126) ? 1 : -1);
 		else if (key == 124 || key == 123)
-			map->img->modif->x_base = -map->img->x_scale * (double)WIDTH / 10
+			m->img->modif->x_base = -m->img->x_scale * (double)WIDTH / 10
 				* ((key == 124) ? 1 : -1);
 		else if (key == 15)
-			init_repere(map);
-		re_trace(map);
+			init_repere(m);
+		re_trace(m);
 	}
 	return (0);
 }
 
-t_map	*create_win(void)
+t_map			*create_win(void)
 {
 	t_map	*map;
 

@@ -6,7 +6,7 @@
 /*   By: gcollett <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/06 16:32:18 by gcollett          #+#    #+#             */
-/*   Updated: 2016/12/06 23:36:31 by gcollett         ###   ########.fr       */
+/*   Updated: 2017/09/29 17:19:32 by gcollett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	*ft_memalloc_exit(size_t size)
 	str = (char *)malloc(sizeof(char) * size);
 	if (!str)
 	{
-		write(1, "ft_memalloc_exit : No such memory\n", 35);
+		write(2, "ft_memalloc_exit : No such memory\n", 35);
 		exit(1);
 	}
 	while (++t < size)
