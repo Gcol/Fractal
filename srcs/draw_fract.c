@@ -14,19 +14,20 @@
 
 void	print_help(t_map *map)
 {
-	char	*src[7];
+	char	*src[8];
 	int		i;
 
 	i = 0;
 	src[0] = "Help :";
-	src[1] = "Touche fleche pour le deplacement";
-	src[2] = "W et S pour changer les couleurs";
-	src[3] = "Molette de la souris et clique pour zoomer et dezoomer";
-	src[4] = "A et D pour changer de fractal si il y en a plusieur";
-	src[5] = "H pour afficher enlever et afficher l annonce d aide";
-	src[6] = "Espace pour figer la souris \
+	src[1] = "R pour reset";
+	src[2] = "Touche fleche pour le deplacement";
+	src[3] = "W et S pour changer les couleurs";
+	src[4] = "Molette de la souris et clique pour zoomer et dezoomer";
+	src[5] = "A et D pour changer de fractal si il y en a plusieur";
+	src[6] = "H pour afficher enlever et afficher l annonce d aide";
+	src[7] = "Espace pour figer la souris \
 dans les fractale utilisant la souris";
-	while (i < 7)
+	while (i < 8)
 	{
 		mlx_string_put(map->mlx, map->win, 15, (i + 1) * 15, 0, src[i]);
 		i++;

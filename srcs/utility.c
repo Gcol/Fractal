@@ -12,7 +12,7 @@
 
 #include <fractol.h>
 
-int		scroll(int button, int x, int y, t_map *map)
+static 	int		scroll(int button, int x, int y, t_map *map)
 {
 	if (button > 0 && button < 6 && button != 3)
 	{
@@ -35,7 +35,7 @@ int		scroll(int button, int x, int y, t_map *map)
 	return (0);
 }
 
-int		get_mouse_position(int x, int y, t_map *map)
+static	int		get_mouse_position(int x, int y, t_map *map)
 {
 	if (map->img->choice == 0 || map->img->choice == 3 || map->img->choice == 4
 		|| map->img->choice == 7 || map->img->choice == 8 || map->img->choice == 9)
@@ -58,15 +58,15 @@ int		get_mouse_position(int x, int y, t_map *map)
 
 #include <stdio.h>
 
-int		pressed_key(int key, t_map *map)
+static	int		pressed_key(int key, t_map *map)
 {
 	if (key == 53)
 		exit(0);
 	if ((key >= 123 && key <= 126) || key == 49 || key == 4 ||	key == 13 ||
-		key == 1 || key == 2 || key == 0)
+		key == 1 || key == 2 || key == 0 || key == 0 || key == 15)
 	{
-		if (key == 1 || (key == 13 && map->img->modif->back > 0x00000FFF))
-			map->img->modif->back += (0x00000F * ((key == 1) ? 1 : -1)) | 0x000000FF;
+		if (key == 1 || key == 13 )
+			map->img->modif->back += ((0x00000F | 0x000000FF) * ((key == 1) ? 1 : -1));
 		else if (key == 4)
 			map->img->modif->help = !(map->img->modif->help);
 		else if (key == 0 && (map->img->next) != NULL)
@@ -81,6 +81,8 @@ int		pressed_key(int key, t_map *map)
 		else if (key == 124 || key == 123)
 			map->img->modif->x_base = -map->img->x_scale * (double)WIDTH / 10
 				* ((key == 124) ? 1 : -1);
+		else if (key == 15)
+			init_repere(map);
 		re_trace(map);
 	}
 	return (0);

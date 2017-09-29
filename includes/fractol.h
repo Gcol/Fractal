@@ -65,6 +65,7 @@ typedef struct		s_map
 
 void				re_trace(t_map *map);
 t_map				*create_win();
+void 				init_repere(t_map *map);
 void				draw_fractal(t_map *map, double x, double y);
 void				choose_good_fractal(t_img *img, t_point inc, \
 t_point coord, int pos);

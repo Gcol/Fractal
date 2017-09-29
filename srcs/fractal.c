@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include <fractol.h>
-#include <math.h>
 
 int		argument_valid(char *argv)
 {
@@ -38,6 +37,18 @@ int		argument_valid(char *argv)
 	return (-1);
 }
 
+void init_repere(t_map *map)
+{
+	map->img->modif->back = 0xB82010;
+	map->img->x[0] = -2;
+	map->img->x[1] = 1.5;
+	map->img->y[0] = -1.5;
+	map->img->y[1] = 1.7;
+	map->img->iteration_max = 250;
+	map->img->y_scale = (map->img->y[1] - map->img->y[0]) / (double)HEIGHT;
+	map->img->x_scale = (map->img->x[1] - map->img->x[0]) / (double)WIDTH;
+}
+
 void	init_fractale(int choice, t_map *map)
 {
 	struct s_img *tmp;
@@ -51,14 +62,7 @@ void	init_fractale(int choice, t_map *map)
 			&map->img->bpp, &map->img->sl, &map->img->end);
 	map->img->modif = ft_memalloc_exit(sizeof(t_modif));
 	map->img->choice = choice;
-	map->img->modif->back = 0xB82010;
-	map->img->x[0] = -2;
-	map->img->x[1] = 1.5;
-	map->img->y[0] = -1.5;
-	map->img->y[1] = 1.7;
-	map->img->iteration_max = 250;
-	map->img->y_scale = (map->img->y[1] - map->img->y[0]) / (double)HEIGHT;
-	map->img->x_scale = (map->img->x[1] - map->img->x[0]) / (double)WIDTH;
+	init_repere(map);
 	draw_fractal(map, 0, 0);
 	if (tmp)
 		tmp->next = map->img;
